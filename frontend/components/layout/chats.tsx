@@ -28,9 +28,9 @@ function Chats(){
 
 function Message(){
     return (
-      <div className="p-4 border-t bg-white flex items-end gap-2">
+      <div className="p-4 bg-white flex items-end gap-2">
         <textarea
-          className="flex-1 min-h-[100px] max-h-40 resize-none rounded-md border px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className="flex-1 min-h-[100px] max-h-40 resize-none rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
           placeholder="メッセージを入力..."
           aria-label="メッセージ入力"
         />

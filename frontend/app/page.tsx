@@ -1,12 +1,15 @@
+import ChatField from "@/components/layout/chats";
 import Friends from "@/components/layout/friends";
 import Header from "@/components/layout/header";
-import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="w-full h-screen bg-blue-100">
+    <div className="w-full h-160">
       <Header/>
-      <Friends/>
+      <div className="flex h-full">
+        <Friends/>
+        <ChatField/>
+      </div>
     </div>
   );
 }

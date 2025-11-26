@@ -2,6 +2,7 @@ package main
 
 import (
 	"chatapp/backend/infra"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -18,6 +19,7 @@ func main() {
 	infra.Initialize()
 	db := infra.SetupDB()
 	router := setupRouter(db)
+	fmt.Println("Server is running on port 8080")
 
 	router.Run(":8080")
 }

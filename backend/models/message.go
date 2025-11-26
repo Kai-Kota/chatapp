@@ -7,5 +7,4 @@ type Message struct {
 	MessageID int    `gorm:"uniqueIndex;not null"`
 	Content   string `gorm:"not null"`
 	UserID    int    `gorm:"not null"`
-	RoomID    int    `gorm:"not null"`
 }

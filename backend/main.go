@@ -15,9 +15,16 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	RoomService := services.NewRoomService(RoomRepository)
 	RoomController := controllers.NewRoomController(RoomService)
 
+	AuthRepository := repositories.NewAuthRepository(db)
+	AuthService := services.NewAuthService(AuthRepository)
+	AuthController := controllers.NewAuthController(AuthService)
+
 	router := gin.Default()
 
-	router.POST("/rooms", RoomController.Create)
+	router.POST("/rooms", RoomController.CreateRoom)
+	
+	router.POST("/signup", AuthController.Signup)
+	router.POST("/login", AuthController.Login)
 
 	return router
 }

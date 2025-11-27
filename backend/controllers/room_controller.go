@@ -9,7 +9,7 @@ import (
 )
 
 type IRoomController interface {
-	Create(ctx *gin.Context)
+	CreateRoom(ctx *gin.Context)
 }
 
 type RoomController struct {
@@ -20,7 +20,7 @@ func NewRoomController(service services.IRoomService) IRoomController {
 	return &RoomController{service: service}
 }
 
-func (c *RoomController) Create(ctx *gin.Context) {
+func (c *RoomController) CreateRoom(ctx *gin.Context) {
 	var input dto.CreateRoomInput
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

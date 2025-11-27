@@ -4,9 +4,9 @@ import Header from "@/components/layout/header";
 
 export default function Home() {
   return (
-    <div className="w-full h-160">
+    <div className="w-full h-screen flex flex-col">
       <Header/>
-      <div className="flex h-full">
+      <div className="flex flex-1">
         <Friends/>
         <ChatField/>
       </div>

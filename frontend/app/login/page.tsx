@@ -46,7 +46,7 @@ export default function SignupPage() {
             setSuccess("ログイン中...");
             setUsername("");
             setPassword("");
-            setTimeout(() => router.push("/"), 1200);
+            setTimeout(() => router.push("/home"), 1200);
         } catch (err) {
             setError("ネットワークエラーが発生しました。");
         } finally {

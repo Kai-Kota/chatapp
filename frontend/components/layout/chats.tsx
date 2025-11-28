@@ -26,7 +26,7 @@ function Chats(){
   )
 }
 
-function Message(){
+function MessageInputField(){
     return (
       <div className="p-4 bg-white flex items-end gap-2">
         <textarea
@@ -46,7 +46,7 @@ export default function ChatField() {
     <>
       <div className="flex flex-col w-full h-full">
         <Chats />
-        <Message />
+        <MessageInputField />
       </div>
     </>
   );

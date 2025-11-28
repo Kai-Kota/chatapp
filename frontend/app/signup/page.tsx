@@ -46,7 +46,7 @@ export default function SignupPage() {
             setSuccess("登録が完了しました。ログインページへ移動します...");
             setUsername("");
             setPassword("");
-            setTimeout(() => router.push("/"), 1200);
+            setTimeout(() => router.push("/home"), 1200);
         } catch (err) {
             setError("ネットワークエラーが発生しました。");
         } finally {
@@ -101,7 +101,7 @@ export default function SignupPage() {
                             <button
                                 type="button"
                                 className="text-sm text-gray-600 hover:underline"
-                                onClick={() => router.push("/")}
+                                onClick={() => router.push("/home")}
                             >
                                 キャンセル
                             </button>

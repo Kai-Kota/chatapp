@@ -1,13 +1,15 @@
+import Room from "../ui/room";
+
 function Friend(){
-  const friends = ["Alice", "Bob", "Charlie", "David", "Eve"];
+  const friends = ["Alice", "Bob"];
 
   return(
     <>
-      {friends.map((name) => (
-        <li key={name} className="w-full h-20 bg-white border-b flex items-center px-4 hover:bg-gray-200 cursor-pointer font-semibold">
-          <span className="rounded-full bg-red-300 w-10 h-10"/>
-          <div className="p-4">{name}</div>
-        </li>
+      {friends.map((name, idx) => (
+        <Room 
+          key={idx}
+          name={name}
+        />
       ))}
     </>
   )

@@ -6,6 +6,7 @@ import (
 	"chatapp/backend/repositories"
 	"chatapp/backend/services"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -20,9 +21,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	AuthController := controllers.NewAuthController(AuthService)
 
 	router := gin.Default()
+	router.Use(cors.Default())
 
 	router.POST("/rooms", RoomController.CreateRoom)
-	
+
 	router.POST("/signup", AuthController.Signup)
 	router.POST("/login", AuthController.Login)
 

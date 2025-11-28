@@ -1,32 +1,26 @@
+import Message from "../ui/message";
+
 function Chats(){
+  let messages = [
+    { userid: 1, text: "こんにちは！" },
+    { userid: 2, text: "元気ですか？" },
+    { userid: 1, text: "はい、元気です！ありがとう。" },
+  ]
+
   return (
     <div className="bg-blue-100 flex-1 h-130 p-4 space-y-3">
-      {/* 受信メッセージ */}
-      <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-full bg-gray-300 flex-shrink-0" />
-        <div className="bg-white px-3 py-2 rounded-lg shadow-sm max-w-[70%] text-sm">
-          元気？
-        </div>
-      </div>
-      {/* 送信メッセージ（右寄せ） */}
-      <div className="flex items-start gap-3 justify-end">
-        <div className="bg-blue-500 text-white px-3 py-2 rounded-lg shadow-sm max-w-[70%] text-sm">
-          元気だよ
-        </div>
-        <div className="w-8 h-8 rounded-full bg-blue-400 flex-shrink-0" />
-      </div>
-      {/* 受信メッセージ*/}
-      <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-full bg-gray-300 flex-shrink-0" />
-        <div className="bg-white px-3 py-2 rounded-lg shadow-sm max-w-[70%] text-sm">
-          そうでっか
-        </div>
-      </div>
+      {messages.map((msg, index) => (
+        <Message
+          key={msg.userid + "_" + index}
+          userid={msg.userid}
+          text={msg.text}  
+        />
+        ))}
     </div>
   )
 }
 
-function Message(){
+function MessageInputField(){
     return (
       <div className="p-4 bg-white flex items-end gap-2">
         <textarea
@@ -46,7 +40,7 @@ export default function ChatField() {
     <>
       <div className="flex flex-col w-full h-full">
         <Chats />
-        <Message />
+        <MessageInputField />
       </div>
     </>
   );

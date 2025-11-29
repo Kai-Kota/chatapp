@@ -1,9 +1,12 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Room struct {
 	gorm.Model
-	RoomID int `gorm:"uniqueIndex;not null"`
+	Member1 uint `gorm:"not null"`
+	Member2 uint `gorm:"not null"`
 	//Messages []Message `gorm:"many2many:message_rooms"`
 }

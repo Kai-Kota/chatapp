@@ -3,6 +3,7 @@ package main
 import (
 	"chatapp/backend/controllers"
 	"chatapp/backend/infra"
+	middleware "chatapp/backend/middlewares"
 	"chatapp/backend/repositories"
 	"chatapp/backend/services"
 
@@ -22,12 +23,14 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	router := gin.Default()
 	router.Use(cors.Default())
-
-	router.POST("/rooms", RoomController.CreateRoom)
+	routerWithAuth := router.Group("/user", middleware.AuthMiddleware(AuthService))
 
 	router.POST("/signup", AuthController.Signup)
 	router.POST("/login", AuthController.Login)
 
+	routerWithAuth.POST("/rooms", RoomController.CreateRoom)
+	routerWithAuth.GET("/rooms", RoomController.GetUserRooms)
+	
 	return router
 }
 

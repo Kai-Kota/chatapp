@@ -8,7 +8,8 @@ import (
 
 type IRoomRepository interface {
 	Create(newRoom models.Room) (*models.Room, error)
-	FindAll() (*[]models.Room, error)
+	GetUserRooms(userId uint) (*[]models.Room, error)
+	FindUserIdByName(userName string) uint
 }
 
 type RoomRepository struct {
@@ -29,10 +30,16 @@ func (r *RoomRepository) Create(newRoom models.Room) (*models.Room, error) {
 	return &newRoom, nil
 }
 
-func (r *RoomRepository) FindAll() (*[]models.Room, error) {
+func (r *RoomRepository) GetUserRooms(userId uint) (*[]models.Room, error) {
 	var rooms []models.Room
-	if err := r.db.Find(&rooms).Error; err != nil {
+	if err := r.db.Where("member1 = ? OR member2 = ?", userId, userId).Find(&rooms).Error; err != nil {
 		return nil, err
 	}
 	return &rooms, nil
+}
+
+func (r *RoomRepository) FindUserIdByName(userName string) uint {
+	var user models.User
+	r.db.First(&user, "user_name = ?", userName)
+	return user.ID
 }

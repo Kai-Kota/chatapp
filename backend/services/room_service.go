@@ -1,13 +1,13 @@
 package services
 
 import (
-	"chatapp/backend/dto"
 	"chatapp/backend/models"
 	"chatapp/backend/repositories"
 )
 
 type IRoomService interface {
-	Create(createRoomInput dto.CreateRoomInput) (*models.Room, error)
+	Create(userId uint, pertner string) (*models.Room, error)
+	GetUserRooms(userId uint) (*[]models.Room, error)
 }
 
 type RoomService struct {
@@ -18,11 +18,18 @@ func NewRoomService(repository repositories.IRoomRepository) IRoomService {
 	return &RoomService{repository: repository}
 }
 
-func (s *RoomService) Create(createRoomInput dto.CreateRoomInput) (*models.Room, error) {
+func (s *RoomService) Create(userId uint, pertner string) (*models.Room, error) {
+	pertnerId := s.repository.FindUserIdByName(pertner)
+
 	// 新しいチャットルームの初期データを設定
 	newRoom := models.Room{
-		RoomID: createRoomInput.RoomID,  
+		Member1: userId,
+		Member2: pertnerId,
 		//Messages: []models.Message{}, // 初期状態ではメッセージは空
 	}
 	return s.repository.Create(newRoom)
+}
+
+func (s *RoomService) GetUserRooms(userId uint) (*[]models.Room, error) {
+	return s.repository.GetUserRooms(userId)
 }

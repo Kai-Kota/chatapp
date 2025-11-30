@@ -71,5 +71,4 @@ func (c *RoomController) GetUserRooms(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"data": rooms})
-	return
 }

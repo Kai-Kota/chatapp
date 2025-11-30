@@ -5,8 +5,8 @@ services:
     ports:
       - 5432:5432
     volumes:
+      - postgres_data:/var/lib/postgresql/data
       - ./docker/chat-postgres/init.d:/docker-entrypoint-initdb.d
-      - ./docker/chat-postgres/pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ginuser
       POSTGRES_PASSWORD: ginpassword
@@ -14,7 +14,6 @@ services:
       POSTGRES_DB: chatapp
     hostname: postgres
     restart: always
-    user: root
 
   pgadmin:
     image: dpage/pgadmin4
@@ -25,6 +24,10 @@ services:
       PGADMIN_DEFAULT_EMAIL: gin@example.com
       PGADMIN_DEFAULT_PASSWORD: ginpassword
     volumes:
-      - ./docker/pgadmin:/var/lib/pgadmin
+      - pgadmin_data:/var/lib/pgadmin
     depends_on:
       - postgres
+
+volumes:
+  postgres_data:
+  pgadmin_data:

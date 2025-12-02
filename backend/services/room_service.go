@@ -23,8 +23,7 @@ func (s *RoomService) Create(userId uint, pertner string) (*models.Room, error) 
 
 	// 新しいチャットルームの初期データを設定
 	newRoom := models.Room{
-		Member1: userId,
-		Member2: pertnerId,
+		
 		//Messages: []models.Message{}, // 初期状態ではメッセージは空
 	}
 	return s.repository.Create(newRoom)

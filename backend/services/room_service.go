@@ -32,10 +32,10 @@ func (s *RoomService) Create(userId uint, pertner string) (*models.Room, error) 
 	room, err := s.repository.Create(newRoom)
 
 	// ユーザーとチャットルームの関連付け
-	if err := s.repository.AssoiciateUserToRoom(userId, newRoom); err != nil {
+	if err := s.repository.AssoiciateUserToRoom(userId, room); err != nil {
 		return nil, err
 	}
-	if err := s.repository.AssoiciateUserToRoom(partnerId, newRoom); err != nil {
+	if err := s.repository.AssoiciateUserToRoom(partnerId, room); err != nil {
 		return nil, err
 	}
 

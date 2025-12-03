@@ -87,10 +87,9 @@ export default function FriendList() {
     try{
       const res = await fetch("http://localhost:8080/user/rooms", {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjQ0Mzg3MTAsInN1YiI6MSwidXNlck5hbWUiOiJrYWkifQ.YxjEhswE2aNQ43GSfWlupt7HJCMEJbNhPTZ5Vla0vEo` },
-        body: JSON.stringify({ name: newFriend }),
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pertner: newFriend }),
       });
       if(!res.ok){
         const data = await res.json().catch(() => ({}));

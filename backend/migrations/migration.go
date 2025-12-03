@@ -11,7 +11,7 @@ func main() {
 
 	// マイグレーションの実行(データベースに登録)
 	if err := db.AutoMigrate(
-		&models.User{}, &models.Room{}); err != nil {
+		&models.User{}, &models.Room{}, &models.Message{}); err != nil {
 		panic("failed to migrate database")
 	}
 }

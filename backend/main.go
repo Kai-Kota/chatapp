@@ -22,7 +22,16 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	AuthController := controllers.NewAuthController(AuthService)
 
 	router := gin.Default()
-	router.Use(cors.Default())
+
+	//CORSの設定
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * 60 * 60,
+	}))
 	routerWithAuth := router.Group("/user", middleware.AuthMiddleware(AuthService))
 
 	router.POST("/signup", AuthController.Signup)
@@ -30,7 +39,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	routerWithAuth.POST("/rooms", RoomController.CreateRoom)
 	routerWithAuth.GET("/rooms", RoomController.GetUserRooms)
-	
+
 	return router
 }
 

@@ -20,12 +20,9 @@ export default function FriendList() {
 
   const fetchRooms = async () => {
     try {
-      const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
       const res = await fetch("http://localhost:8080/user/rooms", {
         method: "GET",
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
+        credentials: "include",
       });
 
       // 204 No Content の場合は空配列を返す

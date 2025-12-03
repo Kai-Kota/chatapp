@@ -87,6 +87,7 @@ func (s *AuthService) GetUserFromToken(tokenString string) (*models.User, error)
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
 	if err != nil {
+		fmt.Println(token)
 		return nil, err
 	}
 

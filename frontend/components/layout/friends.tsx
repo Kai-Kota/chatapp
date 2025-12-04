@@ -24,7 +24,6 @@ export default function FriendList() {
         method: "GET",
         credentials: "include",
       });
-
       // 204 No Content の場合は空配列を返す
       if (res.status === 204) {
         setRoomList([]);
@@ -54,29 +53,18 @@ export default function FriendList() {
       if (!res.ok) {
         const msg = (data && (data.message || data.error)) || `エラー: ${res.status}`;
         setError(msg);
-        return;
       }
 
-      // data の形に応じて rooms を取り出す
-      let rooms: any[] = [];
-      if (Array.isArray(data)) {
-        rooms = data;
-      } else if (data && Array.isArray(data.rooms)) {
-        rooms = data.rooms;
-      } else if (data && Array.isArray(data.data?.rooms)) {
-        rooms = data.data.rooms;
-      } else {
-        // 期待した形でない場合は空配列にフォールバック
-        rooms = [];
+      let rooms: Room[] = [];
+      for(let i = 0; i < data.data.length; i++){;
+        rooms.push({id: data.data[i].ID})
       }
-
       setRoomList(rooms);
       setError(null);
     } catch (err) {
       setError("ネットワークエラーが発生しました。");
     }
   }
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

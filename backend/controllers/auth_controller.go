@@ -43,7 +43,7 @@ func (c *AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	//ログイン処理
 	token, err := c.service.Login(input.UserName, input.Password)
 	if err != nil {
@@ -54,6 +54,8 @@ func (c *AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	ctx.SetCookie("token", *token, 3600, "/", "localhost", false, true)
 
 	ctx.JSON(http.StatusOK, gin.H{"token": token})
 }

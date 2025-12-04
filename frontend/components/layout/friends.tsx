@@ -20,14 +20,10 @@ export default function FriendList() {
 
   const fetchRooms = async () => {
     try {
-      const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
       const res = await fetch("http://localhost:8080/user/rooms", {
         method: "GET",
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
+        credentials: "include",
       });
-
       // 204 No Content の場合は空配列を返す
       if (res.status === 204) {
         setRoomList([]);
@@ -57,29 +53,18 @@ export default function FriendList() {
       if (!res.ok) {
         const msg = (data && (data.message || data.error)) || `エラー: ${res.status}`;
         setError(msg);
-        return;
       }
 
-      // data の形に応じて rooms を取り出す
-      let rooms: any[] = [];
-      if (Array.isArray(data)) {
-        rooms = data;
-      } else if (data && Array.isArray(data.rooms)) {
-        rooms = data.rooms;
-      } else if (data && Array.isArray(data.data?.rooms)) {
-        rooms = data.data.rooms;
-      } else {
-        // 期待した形でない場合は空配列にフォールバック
-        rooms = [];
+      let rooms: Room[] = [];
+      for(let i = 0; i < data.data.length; i++){;
+        rooms.push({id: data.data[i].ID})
       }
-
       setRoomList(rooms);
       setError(null);
     } catch (err) {
       setError("ネットワークエラーが発生しました。");
     }
   }
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,10 +75,9 @@ export default function FriendList() {
     try{
       const res = await fetch("http://localhost:8080/user/rooms", {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjQ0Mzg3MTAsInN1YiI6MSwidXNlck5hbWUiOiJrYWkifQ.YxjEhswE2aNQ43GSfWlupt7HJCMEJbNhPTZ5Vla0vEo` },
-        body: JSON.stringify({ name: newFriend }),
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pertner: newFriend }),
       });
       if(!res.ok){
         const data = await res.json().catch(() => ({}));

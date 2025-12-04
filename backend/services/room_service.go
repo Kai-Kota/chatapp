@@ -3,6 +3,7 @@ package services
 import (
 	"chatapp/backend/models"
 	"chatapp/backend/repositories"
+	"fmt"
 )
 
 type IRoomService interface {
@@ -20,13 +21,13 @@ func NewRoomService(repository repositories.IRoomRepository) IRoomService {
 
 func (s *RoomService) Create(userId uint, pertner string) (*models.Room, error) {
 
+	partnerId := s.repository.FindUserIdByName(pertner)
+
 	// 新しいチャットルームの初期データを設定
 	newRoom := models.Room{
-		Name: "Room_" + "_" + pertner,
+		Name: fmt.Sprintf("%d_%s", userId, pertner),
 		//Messages: []models.Message{}, // 初期状態ではメッセージは空
 	}
-
-	partnerId := s.repository.FindUserIdByName(pertner)
 
 	// チャットルームの作成
 	room, err := s.repository.Create(newRoom)

@@ -3,6 +3,7 @@ package services
 import (
 	"chatapp/backend/models"
 	"chatapp/backend/repositories"
+	"fmt"
 )
 
 type IMessageService interface {
@@ -24,17 +25,19 @@ func (s *MessageService) CreateMessage(userId uint, content string, roomId uint)
 		UserID:  userId,
 		Content: content,
 	}
-	//メッセージの作成
-	if err := s.repository.CreateMessage(newMessage); err != nil {
+
+	message, err := s.repository.CreateMessage(newMessage)
+	if err != nil {
 		return nil, err
 	}
 
+	fmt.Println(message.ID)
 	//メッセージとルームの関連付け
-	if err := s.repository.AssociateRoomToMessage(roomId, &newMessage); err != nil {
+	if err := s.repository.AssociateRoomToMessage(roomId, message); err != nil {
 		return nil, err
 	}
 
-	return &newMessage, nil
+	return message, nil
 }
 
 func (s *MessageService) GetRoomMessages(roomId uint) (*[]models.Message, error) {

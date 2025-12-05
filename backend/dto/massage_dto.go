@@ -6,7 +6,7 @@ type MessageInput struct {
 }
 
 type MessageGetInput struct {
-	RoomID uint `form:"room_id" binding:"required"`
+	RoomID uint `json:"room_id" binding:"required"`
 }
 
 type MessageOutput struct {

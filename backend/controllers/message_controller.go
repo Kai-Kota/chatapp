@@ -47,6 +47,7 @@ func (c *MessageController) CreateMessage(ctx *gin.Context) {
 }
 
 func (c *MessageController) GetRoomMessages(ctx *gin.Context) {
+
 	var input dto.MessageGetInput
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

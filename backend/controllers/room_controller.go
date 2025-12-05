@@ -30,15 +30,14 @@ func (c *RoomController) CreateRoom(ctx *gin.Context) {
 		ctx.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
-
 	// ユーザーIDを取得
 	userId := user.(*models.User).ID
 
 	// リクエストボディのバインド
 	var input dto.CreateRoomInput
 	if err := ctx.ShouldBindJSON(&input); err != nil {
+		fmt.Println("input is " + input.Pertner)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		fmt.Println(input)
 		return
 	}
 
@@ -56,6 +55,7 @@ func (c *RoomController) GetUserRooms(ctx *gin.Context) {
 	user, exists := ctx.Get("user")
 	if !exists {
 		ctx.AbortWithStatus(http.StatusUnauthorized)
+
 		return
 	}
 

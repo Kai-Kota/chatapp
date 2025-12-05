@@ -17,6 +17,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	RoomService := services.NewRoomService(RoomRepository)
 	RoomController := controllers.NewRoomController(RoomService)
 
+	MessageRepository := repositories.NewMessageRepository(db)
+	MessageService := services.NewMessageService(MessageRepository)
+	MessageController := controllers.NewMessageController(MessageService)
+
 	AuthRepository := repositories.NewAuthRepository(db)
 	AuthService := services.NewAuthService(AuthRepository)
 	AuthController := controllers.NewAuthController(AuthService)
@@ -39,6 +43,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	routerWithAuth.POST("/rooms", RoomController.CreateRoom)
 	routerWithAuth.GET("/rooms", RoomController.GetUserRooms)
+
+	routerWithAuth.POST("/messages", MessageController.CreateMessage)
+	routerWithAuth.GET("/messages", MessageController.GetRoomMessages)
 
 	return router
 }

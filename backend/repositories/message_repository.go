@@ -9,6 +9,7 @@ import (
 type IMessageRepository interface {
 	CreateMessage(message models.Message) error
 	FindAllMessages(roomID uint) (*[]models.Message, error)
+	AssociateRoomToMessage(roomId uint, message *models.Message) error
 }
 
 type MessageRepository struct {
@@ -32,4 +33,11 @@ func (r *MessageRepository) FindAllMessages(roomID uint) (*[]models.Message, err
 		return nil, err
 	}
 	return &messages, nil
+}
+
+func (r *MessageRepository) AssociateRoomToMessage(roomId uint, message *models.Message) error {
+	if err := r.db.Model(&models.Message{Model: gorm.Model{ID: roomId}}).Association("Messages").Append(message); err != nil {
+		return err
+	}
+	return nil
 }

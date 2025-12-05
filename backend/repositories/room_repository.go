@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"chatapp/backend/models"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -54,7 +53,6 @@ func (r *RoomRepository) FindUserIdByName(userName string) uint {
 
 func (r *RoomRepository) AssoiciateUserToRoom(userId uint, room *models.Room) error {
 	//チャットルームの作成後、ユーザーとチャットルームの関連付けを行う
-	fmt.Println(room)
 	if err := r.db.Model(&models.User{Model: gorm.Model{ID: userId}}).Association("Rooms").Append(room); err != nil {
 		return err
 	}

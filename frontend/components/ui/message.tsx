@@ -1,14 +1,14 @@
-type Props = {
+type Message = {
     userid: number
-    text: string
+    content: string
 }
 
-export default function Message({text} :Props){
+export default function Message({content} :Message){
     return (
     // 送信用
       <div className="flex items-start gap-3 justify-end">
         <div className="bg-blue-500 text-white px-3 py-2 rounded-lg shadow-sm max-w-[70%] text-sm">
-          {text}
+          {content}
         </div>
         <div className="w-8 h-8 rounded-full bg-blue-400 flex-shrink-0" />
       </div>     

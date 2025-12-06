@@ -1,27 +1,78 @@
+"use client"
+
+import { useEffect, useState } from "react";
 import Message from "../ui/message";
+import { MessageType } from "../../type"; 
 
-function Chats(){
-  let messages = [
-    { userid: 1, text: "こんにちは！" },
-    { userid: 2, text: "元気ですか？" },
-    { userid: 1, text: "はい、元気です！ありがとう。" },
-  ]
+export default function ChatField() {
+  const [messageList, setMessageList] = useState<MessageType[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
 
+  useEffect(() => {
+    fetchMessages();
+  }, [])
+
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/user/rooms", {
+        method: "GET",
+        credentials: "include",
+         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          room_id: 21, 
+        })
+      });
+
+      let data = await res.json();
+      if (!res.ok) {
+        console.log("fetchError");
+      }
+
+      let messages: MessageType[] = [];
+        for(let i = 0; i < data.data.length; i++){
+          messages.push({
+            userId: data.data[i].UserID,
+            content: data.data[i].Content,
+          });
+        }
+        setMessageList(messages);      
+    } catch (err) {
+      console.log("networkError");
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNewMessage("");
+    try{
+      const res = await fetch("http://localhost:8080/user/rooms", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          room_id: 1,
+          content: newMessage 
+        })
+      });
+      if(!res.ok){
+        console.log("fetchError");
+        return;
+      }
+    } catch (err) {
+      console.log("networkError");
+    }
+  }
   return (
-    <div className="bg-blue-100 flex-1 h-130 p-4 space-y-3">
-      {messages.map((msg, index) => (
+    <div className="flex flex-col w-full h-full">
+      <div className="bg-blue-100 flex-1 h-130 p-4 space-y-3">
+      {messageList.map((msg, index) => (
         <Message
-          key={msg.userid + "_" + index}
-          userid={msg.userid}
-          text={msg.text}  
+          key={msg + "_" + index}
+          userid={msg.userId}
+          content={msg.content}  
         />
         ))}
-    </div>
-  )
-}
-
-function MessageInputField(){
-    return (
+      </div>
       <div className="p-4 bg-white flex items-end gap-2">
         <textarea
           className="flex-1 min-h-[100px] max-h-40 resize-none rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -32,16 +83,6 @@ function MessageInputField(){
           送信
         </button>
       </div>
-    )
-}
-
-export default function ChatField() {
-  return (
-    <>
-      <div className="flex flex-col w-full h-full">
-        <Chats />
-        <MessageInputField />
-      </div>
-    </>
+    </div>
   );
 }

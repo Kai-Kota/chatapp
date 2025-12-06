@@ -9,7 +9,7 @@ type Room = {
 
 export default function FriendList() {
   const [roomList, setRoomList] = useState<Room[]>([]);
-  const [newFriend, setNewFriend] = useState("");
+  const [newFriend, setNewFriend] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

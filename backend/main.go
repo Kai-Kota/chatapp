@@ -6,6 +6,7 @@ import (
 	middleware "chatapp/backend/middlewares"
 	"chatapp/backend/repositories"
 	"chatapp/backend/services"
+	ws "chatapp/backend/ws"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -25,6 +26,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	AuthService := services.NewAuthService(AuthRepository)
 	AuthController := controllers.NewAuthController(AuthService)
 
+	hub := ws.NewHub()
+	go hub.Run()
+
 	router := gin.Default()
 
 	//CORSの設定
@@ -38,14 +42,18 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	}))
 	routerWithAuth := router.Group("/user", middleware.AuthMiddleware(AuthService))
 
+	wsrouter := router.Group("/ws")
+	wsrouter.GET("/", func(ctx *gin.Context) {
+		MessageController.ServeWs(ctx, hub)
+	})
+
 	router.POST("/signup", AuthController.Signup)
 	router.POST("/login", AuthController.Login)
 
 	routerWithAuth.POST("/rooms", RoomController.CreateRoom)
 	routerWithAuth.GET("/rooms", RoomController.GetUserRooms)
 
-	routerWithAuth.POST("/messages", MessageController.CreateMessage)
-	routerWithAuth.GET("/messages", MessageController.GetRoomMessages)
+	wsrouter.
 
 	return router
 }

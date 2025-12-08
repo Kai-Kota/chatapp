@@ -1,18 +1,18 @@
 package ws
 
 type Hub struct {
-	clients    map[*Client]bool
+	clients    map[*MessageClient]bool
 	broadcast  chan []byte
-	register   chan *Client
-	unregister chan *Client
+	register   chan *MessageClient
+	unregister chan *MessageClient
 }
 
 func NewHub() *Hub {
 	return &Hub{
 		broadcast:  make(chan []byte),
-		register:   make(chan *Client),
-		unregister: make(chan *Client),
-		clients:    make(map[*Client]bool),
+		register:   make(chan *MessageClient),
+		unregister: make(chan *MessageClient),
+		clients:    make(map[*MessageClient]bool),
 	}
 }
 

@@ -39,4 +39,5 @@ func (c *MessageHandler) ServeWs(hub *Hub, ctx *gin.Context) {
 	client.hub.register <- client
 
 	go client.CreateMessage(c.service)
+	go client.GetRoomMessages(c.service)
 }

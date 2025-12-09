@@ -61,7 +61,6 @@ func (c *MessageClient) CreateMessage(service services.IMessageService) {
 			c.conn.WriteMessage(websocket.TextMessage, []byte(`{"error":"Invalid message format"}`))
 			continue
 		}
-		log.Println("Created message:", input.Content)
 
 		newMessage, err := service.CreateMessage(4, input.Content, input.RoomID)
 		if err != nil {

@@ -31,22 +31,21 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	router := gin.Default()
 
-	// WebSocket ハンドラ登録
-	wsrouter := router.Group("/ws")
-	wsrouter.GET("/messages", func(ctx *gin.Context) {
-		MessageHandler.ServeWs(hub, ctx)
-	})
-
 	//CORSの設定
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:8080"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Upgrade", "Connection"},
 		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
+		AllowCredentials: true,	
 		MaxAge:           12 * 60 * 60,
 	}))
 	routerWithAuth := router.Group("/user", middleware.AuthMiddleware(AuthService))
+	// WebSocket ハンドラ登録
+	wsrouter := router.Group("/ws")
+	wsrouter.GET("/messages", func(ctx *gin.Context) {
+		MessageHandler.ServeWs(hub, ctx)
+	})
 
 	router.POST("/signup", AuthController.Signup)
 	router.POST("/login", AuthController.Login)
